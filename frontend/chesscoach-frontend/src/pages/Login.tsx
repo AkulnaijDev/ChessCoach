@@ -1,46 +1,70 @@
+// src/pages/Login.tsx
 import React, { useState } from 'react';
-import { Button, TextField, Container, Typography, Box } from '@mui/material';
+import { Box, Button, TextField, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
-const Login: React.FC = () => {
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { setIsLoggedIn } = useSettings();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (username === 'root' && password === 'root') {
-      navigate('/home');
+      setIsLoggedIn(true);
+      navigate('/dashboard');  // redirect dopo login
     } else {
-      alert('Credenziali non valide');
+      setError('Username o password errati');
     }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box mt={10} display="flex" flexDirection="column" alignItems="center">
-        <Typography variant="h4" gutterBottom>
-          ChessCoach Login
-        </Typography>
-        <TextField
-          label="Username"
-          margin="normal"
-          fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          label="Password"
-          margin="normal"
-          fullWidth
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button variant="contained" color="primary" fullWidth onClick={handleLogin}>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        p: 2,
+      }}
+    >
+      <Paper sx={{ p: 4, maxWidth: 400, width: '100%' }} elevation={6}>
+        <Typography variant="h5" mb={3} textAlign="center">
           Login
-        </Button>
-      </Box>
-    </Container>
+        </Typography>
+        <form onSubmit={handleSubmit} noValidate>
+          <TextField
+            label="Username"
+            fullWidth
+            margin="normal"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            error={!!error}
+            helperText={error && 'Username o password errati'}
+          />
+          <TextField
+            label="Password"
+            type="password"
+            fullWidth
+            margin="normal"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={!!error}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 3 }}
+          >
+            Accedi
+          </Button>
+        </form>
+      </Paper>
+    </Box>
   );
 };
 

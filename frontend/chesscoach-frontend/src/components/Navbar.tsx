@@ -4,23 +4,38 @@ import {
   Drawer, List, ListItem, ListItemButton, ListItemText, Box
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSettings } from '../context/SettingsContext';
 
 const navItems = [
   { label: 'Home', path: '/' },
   { label: 'Apprendi', path: '/learn' },
   { label: 'Gioca', path: '/play' },
   { label: 'Quiz', path: '/quiz' },
-  { label: 'Dashboard', path: '/dashboard' },
+  { label: 'Dashboard', path: '/dashboard', requiresAuth: true },
+  { label: 'Settings', path: '/settings', requiresAuth: true },
 ];
 
 const Navbar: React.FC = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const toggleDrawer = () => setMobileOpen(!mobileOpen);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSettings();
+
+  const handleNavClick = (path: string, requiresAuth?: boolean) => {
+    if (requiresAuth && !isLoggedIn) {
+      alert('Devi effettuare il login per accedere a questa pagina.');
+      navigate('/'); // reindirizza al login
+      setMobileOpen(false);
+      return;
+    }
+    navigate(path);
+    setMobileOpen(false);
+  };
 
   const drawer = (
-    <Box onClick={toggleDrawer} sx={{ textAlign: 'center' }}>
+    <Box sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         ChessCoach
       </Typography>
@@ -29,9 +44,8 @@ const Navbar: React.FC = () => {
           <ListItem key={item.path} disablePadding>
             <ListItemButton
               sx={{ textAlign: 'center' }}
-              component={Link}
-              to={item.path}
               selected={location.pathname === item.path}
+              onClick={() => handleNavClick(item.path, item.requiresAuth)}
             >
               <ListItemText primary={item.label} />
             </ListItemButton>
@@ -43,7 +57,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <AppBar component="nav" position="static" sx={{ bgcolor: '#121212' }}>
+      <AppBar component="nav" position="static" sx={{ zIndex:'3', bgcolor: '#121212' }}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -54,23 +68,18 @@ const Navbar: React.FC = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}
-          >
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             ChessCoach
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'flex' }, gap: 2 }}>
             {navItems.map((item) => (
               <Button
                 key={item.path}
-                component={Link}
-                to={item.path}
                 sx={{
                   color: 'white',
                   borderBottom: location.pathname === item.path ? '2px solid #90caf9' : 'none',
                 }}
+                onClick={() => handleNavClick(item.path, item.requiresAuth)}
               >
                 {item.label}
               </Button>
