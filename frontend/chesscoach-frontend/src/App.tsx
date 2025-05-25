@@ -27,6 +27,13 @@ const AppContent = () => {
           top: 0, left: 0, right: 0, bottom: 0,
           background: 'linear-gradient(135deg, #000000 0%, #0fffc1 100%)',
           zIndex: 0,
+
+          height: '100vh',
+          width: '100vw',
+
+          overflowX: 'hidden',
+          overflowY: 'hidden',
+
         }}
       />
 
@@ -58,15 +65,29 @@ const AppContent = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/learn" element={<Learn />} />
-          <Route path="/play" element={<Play />} />
-          <Route path="/quiz" element={<Quiz />} />
+          <Route
+            path="/home"
+            element={isLoggedIn ? <Home /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/learn"
+            element={isLoggedIn ? <Learn /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/play"
+            element={isLoggedIn ? <Play /> : <Navigate to="/" replace />}
+          />                              <Route
+            path="/quiz"
+            element={isLoggedIn ? <Quiz /> : <Navigate to="/" replace />}
+          />
           <Route
             path="/dashboard"
             element={isLoggedIn ? <Dashboard /> : <Navigate to="/" replace />}
           />
-          <Route path="/settings" element={<Settings />} />
+          <Route
+            path="/settings"
+            element={isLoggedIn ? <Settings /> : <Navigate to="/" replace />}
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <Footer />

@@ -4,14 +4,14 @@ import {
   Drawer, List, ListItem, ListItemButton, ListItemText, Box
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
 
 const navItems = [
-  { label: 'Home', path: '/' },
-  { label: 'Apprendi', path: '/learn' },
-  { label: 'Gioca', path: '/play' },
-  { label: 'Quiz', path: '/quiz' },
+  { label: 'Home', path: '/home', requiresAuth: true  },
+  { label: 'Apprendi', path: '/learn', requiresAuth: true  },
+  { label: 'Gioca', path: '/play', requiresAuth: true  },
+  { label: 'Quiz', path: '/quiz', requiresAuth: true  },
   { label: 'Dashboard', path: '/dashboard', requiresAuth: true },
   { label: 'Settings', path: '/settings', requiresAuth: true },
 ];

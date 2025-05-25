@@ -1,3 +1,4 @@
+import { blue, red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -7,8 +8,11 @@ const theme = createTheme({
       main: '#90caf9',
     },
     background: {
-      default: '#121212',
+      default: '#ce0c0c',
       paper: '#1e1e2f',
+    },
+    custom: {
+      darkBackgroundMenu: '#272727 !important' ,
     },
   },
   typography: {

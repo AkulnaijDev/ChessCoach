@@ -1,25 +1,26 @@
+// src/context/SettingsContext.tsx
 import React, { createContext, useContext, useState } from 'react';
-import type { ReactNode } from 'react';
 
-interface SettingsContextType {
-  showSnow: boolean;
-  setShowSnow: (value: boolean) => void;
+interface SettingsContextProps {
   isLoggedIn: boolean;
   setIsLoggedIn: (value: boolean) => void;
+  showSnow: boolean;
+  setShowSnow: (value: boolean) => void;
+  toggleSnow: () => void;
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+const SettingsContext = createContext<SettingsContextProps | undefined>(undefined);
 
-interface SettingsProviderProps {
-  children: ReactNode;
-}
-
-export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) => {
-  const [showSnow, setShowSnow] = useState(true);
+export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showSnow, setShowSnow] = useState(true);
+
+  const toggleSnow = () => setShowSnow((prev) => !prev);
 
   return (
-    <SettingsContext.Provider value={{ showSnow, setShowSnow, isLoggedIn, setIsLoggedIn }}>
+    <SettingsContext.Provider
+      value={{ isLoggedIn, setIsLoggedIn, showSnow, setShowSnow, toggleSnow }}
+    >
       {children}
     </SettingsContext.Provider>
   );
@@ -27,8 +28,6 @@ export const SettingsProvider: React.FC<SettingsProviderProps> = ({ children }) 
 
 export const useSettings = () => {
   const context = useContext(SettingsContext);
-  if (!context) {
-    throw new Error('useSettings must be used within a SettingsProvider');
-  }
+  if (!context) throw new Error('useSettings must be used within a SettingsProvider');
   return context;
 };

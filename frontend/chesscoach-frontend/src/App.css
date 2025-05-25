@@ -41,24 +41,21 @@
   color: #888;
 }
 
-/* Sfondo colorato - z-index 0 */
 .background {
-  position: fixed; /* o absolute */
+  position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #121212; /* o il colore che vuoi */
+  background-color: #121212;
   z-index: 0;
 }
 
-/* Pezzi che cadono come neve - z-index 1 */
 .falling-pieces {
-  position: fixed; /* così si muovono sopra lo sfondo */
+  position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none; /* così non interferiscono con click etc */
+  pointer-events: none;
   z-index: 1;
 }
 
-/* Contenuto principale - z-index 2 */
 .content {
-  position: relative; /* o fixed/se vuoi */
+  position: relative;
   z-index: 2;
 }

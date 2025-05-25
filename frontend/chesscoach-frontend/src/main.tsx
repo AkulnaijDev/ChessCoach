@@ -4,6 +4,10 @@ import App from './App';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-        <App />
+    <SettingsProvider>
+      <App />
+    </SettingsProvider>      
   </React.StrictMode>
 );
+
+import { SettingsProvider } from './context/SettingsContext';

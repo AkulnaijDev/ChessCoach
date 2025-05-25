@@ -1,10 +1,11 @@
 // src/pages/Login.tsx
 import React, { useState } from 'react';
-import { Box, Button, TextField, Paper, Typography } from '@mui/material';
+import { Box, Button, TextField, Paper, Typography, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSettings } from '../context/SettingsContext';
 
 const Login = () => {
+    const theme = useTheme();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,23 +16,32 @@ const Login = () => {
     e.preventDefault();
     if (username === 'root' && password === 'root') {
       setIsLoggedIn(true);
-      navigate('/dashboard');  // redirect dopo login
+      navigate('/dashboard');
     } else {
       setError('Username o password errati');
     }
   };
 
   return (
-    <Box
+    <Box 
       sx={{
-        minHeight: '100vh',
+        flex: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        p: 2,
+        px: 2,
       }}
     >
-      <Paper sx={{ p: 4, maxWidth: 400, width: '100%' }} elevation={6}>
+      <Box
+        elevation={6}
+        sx={{
+          p: 4,
+          maxWidth: 400,
+          width: '100%',
+                  backgroundColor: theme.palette.custom.darkBackgroundMenu,
+        color: theme.palette.getContrastText(theme.palette.custom.darkBackgroundMenu),
+        }}
+      >
         <Typography variant="h5" mb={3} textAlign="center">
           Login
         </Typography>
@@ -54,16 +64,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             error={!!error}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            sx={{ mt: 3 }}
-          >
+          <Button type="submit" variant="contained" fullWidth sx={{ mt: 3 }}>
             Accedi
           </Button>
         </form>
-      </Paper>
+      </Box>
     </Box>
   );
 };
